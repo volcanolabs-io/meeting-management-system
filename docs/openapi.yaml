@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Meeting Management System
+  description: API for managing meetings.
+  version: 1.0.0
+  contact:
+    name: John Doe
+    url: https://example.com
+    email: john.doe@example.com
+servers:
+  - url: http://localhost:8080
+    description: Local development
+tags:
+  - name: meetings
+    description: Operations on and about meetings
+paths:
+  /v1/meetings:
+    get:
+      summary: Get meetings
+      description: Get all active meetings
+      operationId: getMeetings
+      tags:
+        - meetings
+      responses:
+        '200':
+          description: Array of `Meeting`
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meeting'
+    post:
+      summary: Create a meeting
+      description: Creates a new meeting
+      operationId: addMeeting
+      tags:
+        - meetings
+      requestBody:
+        description: The JSON representation of a Meeting, excluding the id
+          because that is set as part of storing the Meeting.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingForInsert'
+      responses:
+        '200':
+          description: The meeting after storing, including the id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+    put:
+      summary: Update a meeting
+      description: Update the meeting in the body pf the request.
+      operationId: updateMeeting
+      tags:
+        - meetings
+      requestBody:
+        description: The json representation of a Meeting.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Meeting'
+      responses:
+        '200':
+          description: Updated Meeting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+  /v1/meetings/{meetingId}:
+    parameters:
+      - $ref: '#/components/parameters/path-meeting-id'
+    delete:
+      summary: Delete the meeting.
+      description: Delete the meeting indicated by the meetingId.
+      operationId: deleteMeeting
+      tags:
+        - meetings
+      responses:
+        '204':
+          description: There is no response because the meeting is gone now.
+components:
+  parameters:
+    path-meeting-id:
+      name: meetingId
+      in: path
+      required: true
+      schema:
+        type: string
+      example: 8f1be370-bca1-47fe-9785-7b68f4c75cfd
+  schemas:
+    Meeting:
+      type: object
+      required:
+        - id
+        - name
+        - location
+        - dateTime
+        - duration
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 1b303df2-8517-4add-8e19-cf5e67cb40ad
+        name:
+          type: string
+          example: The most important meeting of all time!
+        location:
+          type: string
+          example: The Red room
+        dateTime:
+          type: string
+          format: date-time
+          example: 2021-01-30T08:30:00Z
+        duration:
+          type: number
+          example: 1.5
+          description: How many hours long
+        status:
+          type: string
+          enum: [ CREATED, ACTIVE, COMPLETE, CANCELED ]
+    MeetingForInsert:
+      type: object
+      required:
+        - name
+        - location
+        - dateTime
+        - duration
+        - status
+      properties:
+        name:
+          type: string
+          example: The most important meeting of all time!
+        location:
+          type: string
+          example: The Red room
+        dateTime:
+          type: string
+          format: date-time
+          example: 2021-01-30T08:30:00Z
+        duration:
+          type: number
+          example: 1.5
+          description: How many hours long
+        status:
+          type: string
+          enum: [ CREATED, ACTIVE, COMPLETE, CANCELED ]
