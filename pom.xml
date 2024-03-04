@@ -2,30 +2,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
+		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>io.volcanolabs.medium</groupId>
 	<artifactId>meeting-management-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>meeting-management-system</name>
 	<description>meeting-management-system</description>
+
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -43,8 +50,31 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit-pioneer</groupId>
+			<artifactId>junit-pioneer</artifactId>
+			<version>2.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.15.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -63,7 +93,59 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.2.0</version>
+				<configuration>
+					<configOptions>
+						<useJakartaEe>true</useJakartaEe>
+					</configOptions>
+
+					<generateModelTests>false</generateModelTests>
+					<generateApiTests>false</generateApiTests>
+					<generateApiDocumentation>false</generateApiDocumentation>
+					<generateModelDocumentation>false</generateModelDocumentation>
+				</configuration>
+				<executions>
+					<execution>
+						<id>service-domain</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/docs/openapi.yaml</inputSpec>
+							<generatorName>java</generatorName>
+							<library>resttemplate</library>
+
+							<apiPackage>io.volcanolabs.medium.mms.api</apiPackage>
+							<modelPackage>io.volcanolabs.medium.mms.domain</modelPackage>
+
+							<generateApis>false</generateApis>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test-client</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/docs/openapi.yaml</inputSpec>
+							<output>${project.build.directory}/generated-test-sources/api</output>
+							<generatorName>java</generatorName>
+							<library>native</library>
+
+							<apiPackage>test.mms.api</apiPackage>
+							<modelPackage>test.mms.domain</modelPackage>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.2.5</version>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

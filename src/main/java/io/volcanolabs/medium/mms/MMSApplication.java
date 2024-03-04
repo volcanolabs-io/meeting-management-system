@@ -1,13 +1,13 @@
-package io.volcanolabs.medium.meetingmanagementsystem;
+package io.volcanolabs.medium.mms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MeetingManagementSystemApplication {
+public class MMSApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run( MeetingManagementSystemApplication.class, args );
+		SpringApplication.run( MMSApplication.class, args );
 	}
 
 }
