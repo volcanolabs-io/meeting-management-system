@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.volcanolabs.medium.mms.controllers.MeetingsController;
 import io.volcanolabs.medium.mms.domain.Meeting;
 import io.volcanolabs.medium.mms.domain.MeetingForInsert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
-import test.mms.ApiClient;
-import test.mms.api.MeetingsApi;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -42,8 +39,6 @@ class MMSApplicationTests {
 
 	WebTestClient webTestClient;
 
-	static MeetingsApi meetingsApi;
-
 	@Autowired
 	MeetingsController meetingsController;
 
@@ -51,13 +46,6 @@ class MMSApplicationTests {
 	ObjectMapper objectMapper;
 
 	Meeting testMeeting;
-
-	@BeforeAll
-	static void init() {
-		test.mms.ApiClient apiClient = new ApiClient();
-
-		meetingsApi = new MeetingsApi( apiClient );
-	}
 
 	@BeforeEach
 	void setup() {

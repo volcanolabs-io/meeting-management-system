@@ -91,6 +91,7 @@ public class ApiTestsIT {
 
 		var firstMeeting = currentMeetings.getFirst();
 		firstMeeting.location( "Somewhere else" );
+		meetingsApi.updateMeeting( firstMeeting );
 
 		var testMeeting = meetingsApi.getMeetings().getFirst();
 		assertEquals( "Somewhere else", testMeeting.getLocation() );
