@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.3</version>
+		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>io.volcanolabs.medium</groupId>
 	<artifactId>meeting-management-system</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>meeting-management-system</name>
 	<description>meeting-management-system</description>
 
@@ -85,6 +85,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<image>
+						<name>docker.io/blah-blah-corp/${project.artifactId}-${project.version}:latest</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -96,7 +99,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.2.0</version>
+				<version>7.4.0</version>
 				<configuration>
 					<configOptions>
 						<useJakartaEe>true</useJakartaEe>
